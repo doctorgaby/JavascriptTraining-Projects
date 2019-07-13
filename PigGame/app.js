@@ -9,27 +9,37 @@ GAME RULES:
 
 */
 
-//variable declarations
+// variable declarations
 var scores, roundScore, activePlayer;
+// start game
+initGame();
 
-//main score array for both players
-scores = [0, 0];
-// round score
-roundScore = 0;
+// Event listener for the hold button
+document.querySelector('.btn-hold').addEventListener('click', function() {
 
-//this variable will be zero for player 1, and one for player 2
-activePlayer = 0;
+    // 1. the current points are saved to the global score
+    scores[activePlayer] += roundScore;
 
+    // 2. update the user interface
+    document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
 
-//change css properties of an html element
-document.querySelector('.dice').style.display = 'none';
+    // 3. check whether player has won and assign winner
+    if (scores[activePlayer] >= 20) {
+        document.getElementById('name-' + activePlayer).textContent = 'Winner';
 
-document.getElementById('score-0').textContent = '0'
-document.getElementById('score-1').textContent = '0'
+        // hide the dice again, as the game is over
+        document.querySelector('.dice').style.display = ('none');
 
-document.getElementById('current-0').textContent = '0'
-document.getElementById('current-1').textContent = '0'
+        // apply another class to the winner
+        document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
 
+        // remove active class from this pannel
+        document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
+    } else {
+    // 4. switch the player
+        switchPlayer();
+    } 
+});
 
 // Event listener for the rolling button
 document.querySelector('.btn-roll').addEventListener('click', function() {
@@ -52,42 +62,22 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
         // next player
         switchPlayer();
     }
-
-// Event listener for the hold button
-document.querySelector('.btn-hold').addEventListener('click', function() {
-    // 1. the current points are saved to the global score
-    scores[activePlayer] += roundScore;
-    // 2. update the user interface
-    document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
-    // 3. check whether player has won and assign winner
-    if (scores[activePlayer] >= 20) {
-        document.getElementById('name-' + activePlayer).textContent = 'Winner';
-        // hide the dice again, as the game is over
-        document.querySelector('.dice').style.display = ('none');
-        // make winner look prettier
-        document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
-        // remove active class from this pannel
-        document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
-    } else {
-        switchPlayer();
-    }
-    
-    // 4. switch the player
-});
     /*
-
+    
     1. Roll Dice
     2. Display Number
     3. If number 1, pass the turn to the other player and current score becomes 0
 
     */
-
 });
 
 function switchPlayer() {
+
     activePlayer === 0 ? activePlayer = 1 : activePlayer = 0; 
+
     //reset to 0 the round
     roundScore = 0;
+
     //update interface
     document.getElementById('current-0').textContent = '0';
     document.getElementById('current-1').textContent = '0';
@@ -97,13 +87,34 @@ function switchPlayer() {
     document.querySelector('.player-1-panel').classList.toggle('active');
 
     // make the dice invisible again
-
     document.querySelector('.dice').style.display = 'none';
 
     // document.querySelector('.player-0-panel').classList.remove('active');
     // // add the active class to opponent
     // document.querySelector('.player-1-panel').classList.add('active');
 
+}
+
+// NewGame Button Implementation
+document.querySelector('.btn-new').addEventListener('click', initGame);
+
+function initGame() {
+    //main score array for both players
+    scores = [0, 0];
+    // round score
+    roundScore = 0;
+
+    //this variable will be zero for player 1, and one for player 2
+    activePlayer = 0;
+
+    //change css properties of an html element
+    document.querySelector('.dice').style.display = 'none';
+
+    document.getElementById('score-0').textContent = '0';
+    document.getElementById('score-1').textContent = '0';
+
+    document.getElementById('current-0').textContent = '0';
+    document.getElementById('current-1').textContent = '0';
 }
 
 //document.querySelector('#current-' + activePlayer).innerHTML = 'em' + dice + '</em>';
@@ -113,6 +124,3 @@ function switchPlayer() {
 
 //select the id element and change the text. 
 //document.querySelector('#current-' + activePlayer).textContent = randomDice;
-
-
-

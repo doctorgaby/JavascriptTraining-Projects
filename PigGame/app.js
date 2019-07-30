@@ -3,9 +3,14 @@ GAME RULES:
 
 - The game has 2 players, playing in rounds
 - In each turn, a player rolls a dice as many times as he whishes. Each result get added to his ROUND score
-- BUT, if the player rolls a 1, all his ROUND score gets lost. After that, it's the next player's turn
+    A Player loses round and total score and PASSES THE TURN if:
+        - two sixes are rolled in the same round or,
+        - two ones occur in the same round
+    A Player loses current round and CONTINUES if:
+        - one of the dices is one and a previous is 1: two consecutive 1
+        - one of the dices is 6 and a previous is also 6: two consecutive 6
 - The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn
-- The first player to reach 100 points on GLOBAL score wins the game
+- The first player to reach 100 points on GLOBAL score wins the game, if not set otherwise at the beginning or during the game in the input field
 
 */
 
@@ -41,17 +46,7 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
         document.getElementById('dice-nr-2').src = 'dice-' + randomDice2 + '.png';        
         
 // ------------------------------------------------------------------------------------
-            // RULES:
-        /*
-            RULES:
-            Player loses round and total score and passes the turn if:
-                - two sixes in the same round
-                - two ones in the same round
-            Player loses current round and continues if:
-                - one of the dices is one and a previous is 1: two consecutive 1
-                - one of the dices is 6 and a previous is also 6: two consecutive 6
-
-        */
+        
         // 1. A player loses the round score if two consecutive six in a row are rolled. 
         if ((randomDice1 === 6 || randomDice2 === 6) && previousRolls.includes(6)) {
             roundScore = 0;
@@ -171,10 +166,6 @@ function switchPlayer() {
     // make the dices invisible again
     document.getElementById('dice-nr-1').style.display = 'none';
     document.getElementById('dice-nr-2').style.display = 'none';
-
-    // document.querySelector('.player-0-panel').classList.remove('active');
-    // // add the active class to opponent
-    // document.querySelector('.player-1-panel').classList.add('active');
 }
 
 // NewGame Button Implementation
